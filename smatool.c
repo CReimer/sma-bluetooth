@@ -865,7 +865,7 @@ time_t ConvertStreamtoTime( unsigned char * stream, int length, time_t * value )
 }
 
 // Set switches to save lots of strcmps
-void  SetSwitches( ConfType *conf, char * datefrom, char * dateto, int *file, int *daterange, int *test )  
+void  SetSwitches( ConfType *conf, char * datefrom, char * dateto, int *daterange, int *test )  
 {
 	if(( strlen(datefrom) > 0 )
 			&&( strlen(dateto) > 0 ))
@@ -1208,7 +1208,7 @@ int main(int argc, char **argv)
 	int archdatalen=0;
 	int failedbluetooth=0;
 	int terminated=0;
-	int s,i,j,status,test=0,file=0,daterange=0;
+	int s,i,j,status,test=0,daterange=0;
 	int already_read=0;
 	int error=0;
 	int ret,found,crc_at_end, finished=0;
@@ -1216,7 +1216,6 @@ int main(int argc, char **argv)
 	int  initstarted=0,setupstarted=0,rangedatastarted=0;
 	long returnpos;
 	int returnline;
-	char compurl[400];  //seg error on curl fix 2012.01.14
 	char datefrom[100];
 	char dateto[100];
 	int  pass_i;
@@ -1277,7 +1276,7 @@ int main(int argc, char **argv)
 	if( GetInverterSetting( &conf ) < 0 )
 		exit(-1);
 	// set switches used through the program
-	SetSwitches( &conf, datefrom, dateto, &file, &daterange, &test );  
+	SetSwitches( &conf, datefrom, dateto, &daterange, &test );  
 	// Set value for inverter type
 	//SetInverterType( &conf );
 	// Get Return Value lookup from file
@@ -1293,10 +1292,7 @@ int main(int argc, char **argv)
 	{
 		if (verbose ==1) printf("Address %s\n",conf.BTAddress);
 
-		if (file ==1)
-			fp=fopen(conf.File,"r");
-		else
-			fp=fopen("/etc/sma.in","r");
+		fp=fopen(conf.File,"r");
 		for( i=1; i<20; i++ ){
 			// allocate a socket
 			s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
